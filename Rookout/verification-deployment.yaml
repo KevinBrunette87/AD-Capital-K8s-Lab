@@ -1,24 +1,24 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: verification
+  name: portal
   labels:
-    app: verification
-    name: verification
+    app: portal
+    name: portal
     keel.sh/policy: force
     keel.sh/trigger: poll
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: verification
+      app: portal
   strategy:
     type: Recreate
   template:
     metadata:
-      name: verification
+      name: portal
       labels:
-        app: verification
+        app: portal
     spec:
       containers:
       - env:
@@ -35,11 +35,13 @@ spec:
               key: accountname
               name: mysecret
         - name: ROLE
-          value: verification
+          value: portal
         - name: APPDYNAMICS_AGENT_NODE_NAME
-          value: Verification
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.name
         - name: APPDYNAMICS_AGENT_TIER_NAME
-          value: Verification-Service
+          value: Portal-Service
         - name: APPD_ANALYTICS_MONITOR
           value: "true"
         - name: APPD_DOCKER_VISIBILITY
@@ -55,7 +57,7 @@ spec:
           - configMapRef:
               name: env-map
         imagePullPolicy: Always
-        name: verification
+        name: portal
         ports:
         - containerPort: 8080
         resources: {}
@@ -101,14 +103,14 @@ apiVersion: v1
 kind: Service
 metadata:
   labels:
-    app: verification
-  name: verification
+    app: portal
+  name: portal
 spec:
   ports:
-  - name: "8083"
+  - name: "8080"
     port: 8080
-    targetPort: 8083
+    targetPort: 8080
   selector:
-    app: verification
+    app: portal
 status:
   loadBalancer: {}
