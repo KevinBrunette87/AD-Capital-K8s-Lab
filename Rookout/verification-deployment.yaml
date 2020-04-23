@@ -37,9 +37,7 @@ spec:
         - name: ROLE
           value: verification
         - name: APPDYNAMICS_AGENT_NODE_NAME
-          valueFrom:
-            fieldRef:
-              fieldPath: metadata.name
+          value: Verification
         - name: APPDYNAMICS_AGENT_TIER_NAME
           value: Verification-Service
         - name: APPD_ANALYTICS_MONITOR
